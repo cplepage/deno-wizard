@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@neutralinojs/neu": "^9.3.1"
+  },
+  "scripts": {
+    "start": "npx neu run"
+  }
+}

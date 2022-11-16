@@ -7,7 +7,9 @@ async function showInfo() {
     const test = await Neutralino.os.execCommand("deno --version", {});
     document.getElementById("is-install").innerHTML = test.stdOut
         ? "✅"
-        : "❌"
+        : "❌";
+
+    document.body.innerHTML += `<div style="text-align: left; margin: 0 auto; max-width: 400px; margin-top: 24px">Currrent Version: <pre>${test.stdOut}</pre></div>`
 }
 
 function darwinDenoInstall(){

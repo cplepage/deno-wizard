@@ -7,7 +7,7 @@ let commands;
 async function initCommands(){
     commands = {
         checkVersion: {
-            Darwin: "deno --version",
+            Darwin: "source $HOME/.zshrc && deno --version",
             Windows: "deno --version"
         },
         downloadAndInstall: {

@@ -25,3 +25,7 @@ button:hover{
     background-color: #3587EF;
     background-color: rgba(53,135,239,var(--tw-bg-opacity));
 }
+
+img{
+    vertical-align: middle;
+}

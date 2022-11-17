@@ -8,8 +8,13 @@
   <body style="text-align: center; font-family: sans-serif; padding: 24px">
     <img height="100px" src="/icons/appIcon.png" />
     <h1 style="line-height: 0.6">Deno Wizard<br /><span style="font-size: 12px;">(very unofficial)</span></h1>
+
+    <div id="latest-version"></div>
+
     <div>Deno Installation: <span id="is-install"></span></div>
     <button onclick="installDeno()">Install</button>
+    <div id="version"></div>
+    <pre id="logs"></pre>
     <!-- Neutralino.js client. This file is gitignored,
         because `neu update` typically downloads it.
         Avoid copy-pasting it.

@@ -8,16 +8,19 @@ async function initCommands(){
     commands = {
         checkVersion: {
             Darwin: "source $HOME/.zshrc && deno --version",
-            Windows: "deno --version"
+            Windows: "deno --version",
+	    Linux: ". $HOME/.bashrc && deno --version"
         },
         downloadAndInstall: {
             Darwin: "curl -fsSL https://deno.land/x/install/install.sh | sh",
-            Windows: "powershell -command \"irm https://deno.land/install.ps1 | iex\""
-        },
+            Windows: "powershell -command \"irm https://deno.land/install.ps1 | iex\"",
+            Linux: "curl -fsSL https://deno.land/x/install/install.sh | sh"
+	},
         postInstall: {
             Darwin: "echo export DENO_INSTALL=\"/Users/" + await Neutralino.os.getEnv('USER') + "/.deno\" >> $HOME/.zshrc && echo export PATH=\"\\$DENO_INSTALL/bin:\\$PATH\" >> $HOME/.zshrc",
-            Windows: "setx /M path \"%path%;C:\\Users\\" +  await Neutralino.os.getEnv('USER') + "\\.deno\\bin\\deno.exe\""
-        }
+            Windows: "setx /M path \"%path%;C:\\Users\\" +  await Neutralino.os.getEnv('USER') + "\\.deno\\bin\\deno.exe\"",
+            Linux: "echo export DENO_INSTALL=\"" + await Neutralino.os.getEnv('HOME') + "/.deno\" >> $HOME/.bashrc && echo export PATH=\"\\$DENO_INSTALL/bin:\\$PATH\" >> $HOME/.bashrc"
+	}
     }
 }
 
@@ -45,8 +48,8 @@ async function showInfo() {
     const test = await Neutralino.os.execCommand(getCommand("checkVersion"), {});
     console.log(test)
     document.getElementById("is-install").innerHTML = test.stdOut
-        ? "✅"
-        : "❌";
+        ? "<img src='https://openmoji.org/data/color/svg/2714.svg' height='25px' width='25px' />"
+        : "<img src='https://openmoji.org/data/color/svg/274C.svg' height='25px' width=25px />";
 
     document.querySelector("#version").innerHTML = `<div style="text-align: left; margin: 0 auto; max-width: 400px; margin-top: 24px">Installed Version: <pre>${test.stdOut}</pre></div>`
 }
@@ -80,6 +83,9 @@ async function shouldProcessWithPostInstall(){
     }else if(NL_OS === "Windows"){
         const pathContent = (await Neutralino.os.execCommand(`path`, {})).stdOut;
         return !pathContent.match(/bin\\deno.exe/g)
+    }else if(NL_OS === "Linux") {
+	const bashrcContent = (await Neutralino.os.execCommand(`cat $HOME/.bashrc`, {})).stdOut;
+	return !bashrcContent.match(/DENO_INSTALL=/g);
     }
 
     return false;
